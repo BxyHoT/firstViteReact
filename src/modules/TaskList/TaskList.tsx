@@ -1,23 +1,28 @@
 import "../../App.css";
 import { Task } from "../Task/Task";
+import { TaskListState } from "../../App";
 
-export interface Task {
-  id: number;
-  content: string;
-}
-
-interface TasksListProps {
-  tasksArray: Task[];
-}
-
-export const TaskList = ({ tasksArray }: TasksListProps) => {
+export const TaskList = ({
+  tasksArray,
+  handleChangeDone,
+}: {
+  tasksArray: TaskListState["tasksArray"];
+  handleChangeDone: (id: number) => void;
+}) => {
   const tasks = tasksArray.map((task) => {
-    const { id, content } = task;
+    const { id, content, isDone } = task;
+
     return (
-      <li className="completed" key={id}>
-        <Task content={content} />
+      <li className={isDone ? "completed" : ""} key={id}>
+        <Task
+          id={id}
+          content={content}
+          isDone={isDone}
+          handleChangeDone={handleChangeDone}
+        />
       </li>
     );
   });
+
   return <ul className="todo-list">{tasks}</ul>;
 };
