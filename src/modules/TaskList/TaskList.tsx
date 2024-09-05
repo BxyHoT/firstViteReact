@@ -32,13 +32,3 @@ export class TaskList extends Component<ITasksListProps> {
     return <ul className="todo-list">{tasks}</ul>;
   }
 }
-
-// export const TaskList = ({
-//   tasksArray,
-//   handleChangeDone,
-//   handleTaskDelete,
-// }: {
-//   tasksArray: ITask[];
-//   handleChangeDone: HandleFunctions;
-//   handleTaskDelete: HandleFunctions;
-// }) => {};
