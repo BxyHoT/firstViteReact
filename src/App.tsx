@@ -5,28 +5,30 @@ import { Footer } from "./modules/Footer/Footer";
 // import { useState } from "react";
 import React from "react";
 
-interface Task {
+export interface ITask {
   id: number;
   content: string;
   isDone: boolean;
-  isDeleted: boolean;
 }
 
-export interface TaskListState {
-  tasksArray: Task[];
+interface ITaskListState {
+  tasksArray: ITask[];
 }
 
-class App extends React.Component<object, TaskListState> {
+export type HandleFunctions = (id: number) => void;
+
+class App extends React.Component<object, ITaskListState> {
   constructor(props: object) {
     super(props);
-    this.state = {
-      tasksArray: [
-        { id: 1, content: "Task 1", isDone: false, isDeleted: false },
-        { id: 2, content: "Task 2", isDone: false, isDeleted: false },
-        { id: 3, content: "Task 3", isDone: false, isDeleted: false },
-      ],
-    };
   }
+
+  state = {
+    tasksArray: [
+      { id: 1, content: "Task 1", isDone: false },
+      { id: 2, content: "Task 2", isDone: false },
+      { id: 3, content: "Task 3", isDone: false },
+    ],
+  };
 
   handleChangeDone = (id: number) => {
     this.setState(({ tasksArray }) => {
@@ -35,6 +37,20 @@ class App extends React.Component<object, TaskListState> {
       );
 
       return { tasksArray: updatedTasks };
+    });
+  };
+
+  handleTaskDeleted = (id: number) => {
+    this.setState(({ tasksArray }) => {
+      const taskDeletedIndex = tasksArray.findIndex((task) => task.id === id);
+      const updateTasksArray = [
+        ...tasksArray.slice(0, taskDeletedIndex),
+        ...tasksArray.slice(taskDeletedIndex + 1),
+      ];
+
+      return {
+        tasksArray: updateTasksArray,
+      };
     });
   };
 
@@ -48,6 +64,7 @@ class App extends React.Component<object, TaskListState> {
           <TaskList
             tasksArray={tasksArray}
             handleChangeDone={this.handleChangeDone}
+            handleTaskDeleted={this.handleTaskDeleted}
           ></TaskList>
           <Footer taskLength={tasksArray.length} />
         </section>

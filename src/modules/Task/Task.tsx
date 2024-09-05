@@ -1,16 +1,19 @@
 import "../../App.css";
 import { formatDistanceToNow } from "date-fns";
+import { HandleFunctions } from "../../App";
 
 export const Task = ({
   content,
   isDone,
   handleChangeDone,
   id,
+  handleTaskDeleted,
 }: {
   id: number;
   content: string;
   isDone: boolean;
-  handleChangeDone: (id: number) => void;
+  handleChangeDone: HandleFunctions;
+  handleTaskDeleted: HandleFunctions;
 }) => {
   return (
     <div className="view">
@@ -27,7 +30,12 @@ export const Task = ({
         <span className="created">{formatDistanceToNow(new Date())}</span>
       </label>
       <button className="icon icon-edit"></button>
-      <button className="icon icon-destroy"></button>
+      <button
+        className="icon icon-destroy"
+        onClick={() => {
+          handleTaskDeleted(id);
+        }}
+      ></button>
     </div>
   );
 };

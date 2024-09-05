@@ -1,13 +1,15 @@
 import "../../App.css";
 import { Task } from "../Task/Task";
-import { TaskListState } from "../../App";
+import { ITask, HandleFunctions } from "../../App";
 
 export const TaskList = ({
   tasksArray,
   handleChangeDone,
+  handleTaskDeleted,
 }: {
-  tasksArray: TaskListState["tasksArray"];
-  handleChangeDone: (id: number) => void;
+  tasksArray: ITask[];
+  handleChangeDone: HandleFunctions;
+  handleTaskDeleted: HandleFunctions;
 }) => {
   const tasks = tasksArray.map((task) => {
     const { id, content, isDone } = task;
@@ -19,6 +21,7 @@ export const TaskList = ({
           content={content}
           isDone={isDone}
           handleChangeDone={handleChangeDone}
+          handleTaskDeleted={handleTaskDeleted}
         />
       </li>
     );
