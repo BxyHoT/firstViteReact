@@ -40,7 +40,7 @@ class App extends React.Component<object, ITaskListState> {
     });
   };
 
-  handleTaskDeleted = (id: number) => {
+  handleTaskDelete = (id: number) => {
     this.setState(({ tasksArray }) => {
       const taskDeletedIndex = tasksArray.findIndex((task) => task.id === id);
       const updateTasksArray = [
@@ -54,6 +54,13 @@ class App extends React.Component<object, ITaskListState> {
     });
   };
 
+  getDonesTasks = () => {
+    const tasksArray = this.state.tasksArray;
+    const doneTasksArray = tasksArray.filter(({ isDone }) => !isDone);
+
+    return doneTasksArray;
+  };
+
   render() {
     const { tasksArray } = this.state;
 
@@ -64,9 +71,9 @@ class App extends React.Component<object, ITaskListState> {
           <TaskList
             tasksArray={tasksArray}
             handleChangeDone={this.handleChangeDone}
-            handleTaskDeleted={this.handleTaskDeleted}
+            handleTaskDelete={this.handleTaskDelete}
           ></TaskList>
-          <Footer taskLength={tasksArray.length} />
+          <Footer taskLength={this.getDonesTasks().length} />
         </section>
       </section>
     );

@@ -7,13 +7,13 @@ export const Task = ({
   isDone,
   handleChangeDone,
   id,
-  handleTaskDeleted,
+  handleTaskDelete,
 }: {
   id: number;
   content: string;
   isDone: boolean;
   handleChangeDone: HandleFunctions;
-  handleTaskDeleted: HandleFunctions;
+  handleTaskDelete: HandleFunctions;
 }) => {
   return (
     <div className="view">
@@ -32,9 +32,7 @@ export const Task = ({
       <button className="icon icon-edit"></button>
       <button
         className="icon icon-destroy"
-        onClick={() => {
-          handleTaskDeleted(id);
-        }}
+        onClick={() => handleTaskDelete(id)}
       ></button>
     </div>
   );

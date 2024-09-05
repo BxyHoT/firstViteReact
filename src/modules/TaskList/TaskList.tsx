@@ -5,11 +5,11 @@ import { ITask, HandleFunctions } from "../../App";
 export const TaskList = ({
   tasksArray,
   handleChangeDone,
-  handleTaskDeleted,
+  handleTaskDelete,
 }: {
   tasksArray: ITask[];
   handleChangeDone: HandleFunctions;
-  handleTaskDeleted: HandleFunctions;
+  handleTaskDelete: HandleFunctions;
 }) => {
   const tasks = tasksArray.map((task) => {
     const { id, content, isDone } = task;
@@ -21,7 +21,7 @@ export const TaskList = ({
           content={content}
           isDone={isDone}
           handleChangeDone={handleChangeDone}
-          handleTaskDeleted={handleTaskDeleted}
+          handleTaskDelete={handleTaskDelete}
         />
       </li>
     );
