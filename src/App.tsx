@@ -12,7 +12,10 @@ export interface ITask {
 }
 
 interface ITaskListState {
-  tasksArray: ITask[];
+  tasksArray: ITask[] | [];
+  isActive: boolean;
+  isCompleted: boolean;
+  isAll: boolean;
 }
 
 export type HandleFunctionsById = (id: number) => void;
@@ -34,6 +37,9 @@ class App extends React.Component<object, ITaskListState> {
       this.createTask("Task 2"),
       this.createTask("Task 3"),
     ],
+    isActive: false,
+    isCompleted: false,
+    isAll: true,
   };
 
   handlePushTusk = (text: string) => {
@@ -42,6 +48,20 @@ class App extends React.Component<object, ITaskListState> {
 
       return { tasksArray: updateTasksArray };
     });
+  };
+
+  getActiveTasks = () => {
+    const tasksArray = this.state.tasksArray;
+    const doneTasksArray = tasksArray.filter(({ isDone }) => !isDone);
+
+    return doneTasksArray;
+  };
+
+  getDonesTasks = () => {
+    const tasksArray = this.state.tasksArray;
+    const activeTasksArray = tasksArray.filter(({ isDone }) => isDone);
+
+    return activeTasksArray;
   };
 
   handleChangeDone = (id: number) => {
@@ -68,26 +88,75 @@ class App extends React.Component<object, ITaskListState> {
     });
   };
 
-  getDonesTasks = () => {
-    const tasksArray = this.state.tasksArray;
-    const doneTasksArray = tasksArray.filter(({ isDone }) => !isDone);
+  handleClearCompleted = () => {
+    const activeTasks = this.getActiveTasks();
 
-    return doneTasksArray;
+    this.setState(() => {
+      return {
+        tasksArray: activeTasks,
+      };
+    });
+  };
+
+  handleGetActiveTasks = () => {
+    this.setState(() => {
+      return {
+        isActive: true,
+        isAll: false,
+        isCompleted: false,
+      };
+    });
+  };
+
+  handleGetAllTasks = () => {
+    this.setState(() => {
+      return {
+        isActive: false,
+        isAll: true,
+        isCompleted: false,
+      };
+    });
+  };
+
+  handleGetCompletedTasks = () => {
+    this.setState(() => {
+      return {
+        isActive: false,
+        isAll: false,
+        isCompleted: true,
+      };
+    });
   };
 
   render() {
-    const { tasksArray } = this.state;
+    const { tasksArray, isActive, isAll, isCompleted } = this.state;
+
+    const checkFilter = () => {
+      if (isAll) return tasksArray;
+      if (isActive) return this.getActiveTasks();
+      if (isCompleted) return this.getDonesTasks();
+      return tasksArray;
+    };
 
     return (
       <section className="todoapp">
         <Header handlePushTask={this.handlePushTusk} />
         <section className="main">
           <TaskList
-            tasksArray={tasksArray}
+            tasksArray={checkFilter()}
             handleChangeDone={this.handleChangeDone}
             handleTaskDelete={this.handleTaskDelete}
           ></TaskList>
-          <Footer taskLength={this.getDonesTasks().length} />
+          <Footer
+            taskLength={this.getActiveTasks().length}
+            handleClearCompleted={this.handleClearCompleted}
+            handleGetActiveTasks={this.handleGetActiveTasks}
+            handleGetAllTasks={this.handleGetAllTasks}
+            handleGetCompletedTasks={this.handleGetCompletedTasks}
+            isActive={isActive}
+            isAll={isAll}
+            isCompleted={isCompleted}
+          />
         </section>
       </section>
     );

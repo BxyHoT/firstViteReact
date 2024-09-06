@@ -4,7 +4,7 @@ import { ITask, HandleFunctionsById } from "../../App";
 import { Component } from "react";
 
 interface ITasksListProps {
-  tasksArray: ITask[];
+  tasksArray: ITask[] | [];
   handleChangeDone: HandleFunctionsById;
   handleTaskDelete: HandleFunctionsById;
 }
@@ -12,6 +12,8 @@ interface ITasksListProps {
 export class TaskList extends Component<ITasksListProps> {
   render() {
     const { tasksArray, handleChangeDone, handleTaskDelete } = this.props;
+
+    if (tasksArray.length === 0) return <></>;
 
     const tasks = tasksArray.map((task) => {
       const { id, content, isDone } = task;
