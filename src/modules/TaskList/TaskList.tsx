@@ -1,12 +1,12 @@
 import "../../App.css";
 import { Task } from "../Task/Task";
-import { ITask, HandleFunctions } from "../../App";
+import { ITask, HandleFunctionsById } from "../../App";
 import { Component } from "react";
 
 interface ITasksListProps {
   tasksArray: ITask[];
-  handleChangeDone: HandleFunctions;
-  handleTaskDelete: HandleFunctions;
+  handleChangeDone: HandleFunctionsById;
+  handleTaskDelete: HandleFunctionsById;
 }
 
 export class TaskList extends Component<ITasksListProps> {

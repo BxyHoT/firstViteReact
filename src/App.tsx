@@ -15,19 +15,33 @@ interface ITaskListState {
   tasksArray: ITask[];
 }
 
-export type HandleFunctions = (id: number) => void;
+export type HandleFunctionsById = (id: number) => void;
+export type HandleFunctionsByText = (text: string) => void;
 
 class App extends React.Component<object, ITaskListState> {
   constructor(props: object) {
     super(props);
   }
+  maxId = 100;
+
+  createTask = (text: string) => {
+    return { id: this.maxId++, isDone: false, content: text };
+  };
 
   state = {
     tasksArray: [
-      { id: 1, content: "Task 1", isDone: false },
-      { id: 2, content: "Task 2", isDone: false },
-      { id: 3, content: "Task 3", isDone: false },
+      this.createTask("Task 1"),
+      this.createTask("Task 2"),
+      this.createTask("Task 3"),
     ],
+  };
+
+  handlePushTusk = (text: string) => {
+    this.setState(({ tasksArray }) => {
+      const updateTasksArray = [...tasksArray, this.createTask(text)];
+
+      return { tasksArray: updateTasksArray };
+    });
   };
 
   handleChangeDone = (id: number) => {
@@ -66,7 +80,7 @@ class App extends React.Component<object, ITaskListState> {
 
     return (
       <section className="todoapp">
-        <Header />
+        <Header handlePushTask={this.handlePushTusk} />
         <section className="main">
           <TaskList
             tasksArray={tasksArray}

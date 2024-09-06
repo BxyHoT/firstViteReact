@@ -1,14 +1,14 @@
 import "../../App.css";
 import { formatDistanceToNow } from "date-fns";
-import { HandleFunctions } from "../../App";
+import { HandleFunctionsById } from "../../App";
 import { Component } from "react";
 
 interface ITaskProps {
   id: number;
   content: string;
   isDone: boolean;
-  handleChangeDone: HandleFunctions;
-  handleTaskDelete: HandleFunctions;
+  handleChangeDone: HandleFunctionsById;
+  handleTaskDelete: HandleFunctionsById;
 }
 
 export class Task extends Component<ITaskProps> {
