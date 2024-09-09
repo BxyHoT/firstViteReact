@@ -40,6 +40,7 @@ export class TaskList extends Component<ITasksListProps> {
           handleTaskDelete={handleTaskDelete}
           handleChangeTask={handleChangeTask}
           handleEditing={handleEditing}
+          key={id}
         ></TaskListItem>
       );
     });

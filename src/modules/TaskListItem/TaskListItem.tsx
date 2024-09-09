@@ -38,7 +38,7 @@ export class TaskListItem extends Component<ITaskListItem> {
     const { inputValue } = this.state;
 
     return (
-      <li className={this.classToggle(isDone, isEditing)} key={id}>
+      <li className={this.classToggle(isDone, isEditing)}>
         <Task
           id={id}
           content={content}
