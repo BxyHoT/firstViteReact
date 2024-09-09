@@ -9,6 +9,7 @@ export interface ITask {
   id: number;
   content: string;
   isDone: boolean;
+  isEditing: boolean;
 }
 
 interface ITaskListState {
@@ -28,7 +29,7 @@ class App extends React.Component<object, ITaskListState> {
   maxId = 100;
 
   createTask = (text: string) => {
-    return { id: this.maxId++, isDone: false, content: text };
+    return { id: this.maxId++, isDone: false, content: text, isEditing: false };
   };
 
   state = {
@@ -128,6 +129,38 @@ class App extends React.Component<object, ITaskListState> {
     });
   };
 
+  handleChangeTask = (id: number, text: string) => {
+    this.setState(({ tasksArray }) => {
+      const taskChangeIndex = tasksArray.findIndex((task) => task.id === id);
+      const { ...updateTask } = tasksArray[taskChangeIndex];
+      updateTask.content = text;
+      updateTask.isEditing = false;
+
+      const updateArray = [
+        ...tasksArray.slice(0, taskChangeIndex),
+        updateTask,
+        ...tasksArray.slice(taskChangeIndex + 1),
+      ];
+
+      return { tasksArray: updateArray };
+    });
+  };
+
+  handleEditing = (id: number) => {
+    this.setState(({ tasksArray }) => {
+      const taskEditingIndex = tasksArray.findIndex((task) => task.id === id);
+      const { ...taskEditingUpdate } = tasksArray[taskEditingIndex];
+      taskEditingUpdate.isEditing = true;
+      const updateArray = [
+        ...tasksArray.slice(0, taskEditingIndex),
+        taskEditingUpdate,
+        ...tasksArray.slice(taskEditingIndex + 1),
+      ];
+
+      return { tasksArray: updateArray };
+    });
+  };
+
   render() {
     const { tasksArray, isActive, isAll, isCompleted } = this.state;
 
@@ -146,6 +179,8 @@ class App extends React.Component<object, ITaskListState> {
             tasksArray={checkFilter()}
             handleChangeDone={this.handleChangeDone}
             handleTaskDelete={this.handleTaskDelete}
+            handleChangeTask={this.handleChangeTask}
+            handleEditing={this.handleEditing}
           ></TaskList>
           <Footer
             taskLength={this.getActiveTasks().length}

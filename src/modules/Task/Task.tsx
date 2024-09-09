@@ -7,14 +7,21 @@ interface ITaskProps {
   id: number;
   content: string;
   isDone: boolean;
+  handleEditing: HandleFunctionsById;
   handleChangeDone: HandleFunctionsById;
   handleTaskDelete: HandleFunctionsById;
 }
 
 export class Task extends Component<ITaskProps> {
   render() {
-    const { id, content, isDone, handleChangeDone, handleTaskDelete } =
-      this.props;
+    const {
+      id,
+      content,
+      isDone,
+      handleChangeDone,
+      handleTaskDelete,
+      handleEditing,
+    } = this.props;
 
     return (
       <div className="view">
@@ -30,7 +37,12 @@ export class Task extends Component<ITaskProps> {
           <span className="description">{content}</span>
           <span className="created">{formatDistanceToNow(new Date())}</span>
         </label>
-        <button className="icon icon-edit"></button>
+        <button
+          className="icon icon-edit"
+          onClick={() => {
+            handleEditing(id);
+          }}
+        ></button>
         <button
           className="icon icon-destroy"
           onClick={() => handleTaskDelete(id)}
