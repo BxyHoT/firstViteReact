@@ -2,6 +2,7 @@ import "../../App.css";
 import { formatDistanceToNow } from "date-fns";
 import { HandleFunctionsById } from "../../App";
 import { Component } from "react";
+import { Timer } from "../Timer/Timer";
 
 interface ITaskProps {
   id: number;
@@ -35,7 +36,8 @@ export class Task extends Component<ITaskProps> {
         />
         <label>
           <span className="description">{content}</span>
-          <span className="created">{formatDistanceToNow(new Date())}</span>
+          <Timer />
+          <span className="description">{formatDistanceToNow(new Date())}</span>
         </label>
         <button
           className="icon icon-edit"
