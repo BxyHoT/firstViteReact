@@ -8,12 +8,37 @@ interface ITaskProps {
   id: number;
   content: string;
   isDone: boolean;
+  time: Date;
+  createdTime: Date;
   handleEditing: HandleFunctionsById;
   handleChangeDone: HandleFunctionsById;
   handleTaskDelete: HandleFunctionsById;
+  handleOnRunning: HandleFunctionsById;
 }
 
-export class Task extends Component<ITaskProps> {
+interface ITaskState {
+  createdTime: null | string;
+}
+
+export class Task extends Component<ITaskProps, ITaskState> {
+  interval: undefined | number = undefined;
+
+  state = { createdTime: null };
+
+  componentDidMount(): void {
+    this.setState({ createdTime: formatDistanceToNow(this.props.createdTime) });
+
+    this.interval = setInterval(() => {
+      this.setState({
+        createdTime: formatDistanceToNow(this.props.createdTime),
+      });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   render() {
     const {
       id,
@@ -22,6 +47,8 @@ export class Task extends Component<ITaskProps> {
       handleChangeDone,
       handleTaskDelete,
       handleEditing,
+      handleOnRunning,
+      time,
     } = this.props;
 
     return (
@@ -35,9 +62,14 @@ export class Task extends Component<ITaskProps> {
           }}
         />
         <label>
-          <span className="description">{content}</span>
-          <Timer />
-          <span className="description">{formatDistanceToNow(new Date())}</span>
+          <span className="title">{content}</span>
+          <Timer
+            isDone={isDone}
+            time={time}
+            id={id}
+            handleOnRunning={handleOnRunning}
+          />
+          <span className="description">{this.state.createdTime}</span>
         </label>
         <button
           className="icon icon-edit"

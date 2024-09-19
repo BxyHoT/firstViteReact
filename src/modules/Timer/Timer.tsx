@@ -1,31 +1,32 @@
 import { Component, ReactNode } from "react";
 import "../../App.css";
 
-interface ITimerState {
+interface ITimerProps {
+  isDone: boolean;
   time: Date;
-  isRunning: boolean;
+  id: number;
+  handleOnRunning: (id: number) => void;
 }
 
-export class Timer extends Component<object, ITimerState> {
-  state = {
-    time: new Date(2024, 0, 1, 0, 0, 0),
-    isRunning: false,
-  };
+interface ITimerState {
+  isRunning: boolean;
+  time: string;
+}
 
+export class Timer extends Component<ITimerProps, ITimerState> {
   interval: number | undefined = undefined;
+
+  state = {
+    isRunning: false,
+    time: this.props.time.toLocaleTimeString().slice(3),
+  };
 
   onRunning = () => {
     if (!this.state.isRunning) {
       this.setState({ isRunning: true });
 
       this.interval = setInterval(() => {
-        this.setState(({ time }) => {
-          const updateTime = new Date(time);
-
-          updateTime.setSeconds(updateTime.getSeconds() + 1);
-
-          return { time: updateTime };
-        });
+        this.props.handleOnRunning(this.props.id);
       }, 1000);
     }
   };
@@ -34,6 +35,12 @@ export class Timer extends Component<object, ITimerState> {
     clearInterval(this.interval);
     this.setState({ isRunning: false });
   };
+
+  componentDidUpdate(prevProps: Readonly<ITimerProps>): void {
+    if (prevProps.time !== this.props.time) {
+      this.setState({ time: this.props.time.toLocaleTimeString().slice(3) });
+    }
+  }
 
   componentWillUnmount() {
     clearInterval(this.interval);
@@ -46,9 +53,7 @@ export class Timer extends Component<object, ITimerState> {
       <span className="description">
         <button className="icon icon-play" onClick={this.onRunning}></button>
         <button className="icon icon-pause" onClick={this.offRunnig}></button>
-        <span style={{ marginLeft: 6 }}>
-          {time.toLocaleTimeString().slice(3)}
-        </span>
+        <span style={{ marginLeft: 6 }}>{time}</span>
       </span>
     );
   }

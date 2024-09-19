@@ -9,6 +9,7 @@ interface ITasksListProps {
   handleTaskDelete: HandleFunctionsById;
   handleEditing: HandleFunctionsById;
   handleChangeTask: (id: number, text: string) => void;
+  handleOnRunning: HandleFunctionsById;
 }
 
 export class TaskList extends Component<ITasksListProps> {
@@ -23,12 +24,13 @@ export class TaskList extends Component<ITasksListProps> {
       handleTaskDelete,
       handleChangeTask,
       handleEditing,
+      handleOnRunning,
     } = this.props;
 
     if (tasksArray.length === 0) return <></>;
 
     const tasks = tasksArray.map((task) => {
-      const { id, content, isDone, isEditing } = task;
+      const { id, content, isDone, isEditing, time, createdTime } = task;
 
       return (
         <TaskListItem
@@ -40,7 +42,10 @@ export class TaskList extends Component<ITasksListProps> {
           handleTaskDelete={handleTaskDelete}
           handleChangeTask={handleChangeTask}
           handleEditing={handleEditing}
+          handleOnRunning={handleOnRunning}
           key={id}
+          time={time}
+          createdTime={createdTime}
         ></TaskListItem>
       );
     });

@@ -7,6 +7,7 @@ import { ITask } from "../../App";
 interface ITaskListItem extends ITask {
   handleChangeDone: HandleFunctionsById;
   handleTaskDelete: HandleFunctionsById;
+  handleOnRunning: HandleFunctionsById;
   handleEditing: HandleFunctionsById;
   handleChangeTask: (id: number, text: string) => void;
 }
@@ -30,10 +31,13 @@ export class TaskListItem extends Component<ITaskListItem> {
       handleTaskDelete,
       handleChangeTask,
       handleEditing,
+      handleOnRunning,
       isDone,
       isEditing,
       id,
       content,
+      time,
+      createdTime,
     } = this.props;
     const { inputValue } = this.state;
 
@@ -46,6 +50,9 @@ export class TaskListItem extends Component<ITaskListItem> {
           handleChangeDone={handleChangeDone}
           handleTaskDelete={handleTaskDelete}
           handleEditing={handleEditing}
+          time={time}
+          createdTime={createdTime}
+          handleOnRunning={handleOnRunning}
         />
         <input
           type="text"

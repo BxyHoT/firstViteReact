@@ -257,6 +257,11 @@ body {
   text-decoration: line-through;
 }
 
+.completed {
+  color: #cdcdcd;
+  text-decoration: line-through;
+}
+
 .todo-list li .icon {
   width: 30px;
   height: 40px;

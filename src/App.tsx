@@ -2,7 +2,6 @@ import "./App.css";
 import { Header } from "./modules/Header/Header";
 import { TaskList } from "./modules/TaskList/TaskList";
 import { Footer } from "./modules/Footer/Footer";
-// import { useState } from "react";
 import React from "react";
 
 export interface ITask {
@@ -10,6 +9,8 @@ export interface ITask {
   content: string;
   isDone: boolean;
   isEditing: boolean;
+  time: Date;
+  createdTime: Date;
 }
 
 interface ITaskListState {
@@ -21,6 +22,11 @@ interface ITaskListState {
 
 export type HandleFunctionsById = (id: number) => void;
 export type HandleFunctionsByText = (text: string) => void;
+export type HandleFunctionsWithDate = (
+  text: string,
+  min: string,
+  sec: string
+) => void;
 
 class App extends React.Component<object, ITaskListState> {
   constructor(props: object) {
@@ -28,8 +34,15 @@ class App extends React.Component<object, ITaskListState> {
   }
   maxId = 100;
 
-  createTask = (text: string) => {
-    return { id: this.maxId++, isDone: false, content: text, isEditing: false };
+  createTask = (text: string, min: string = "0", sec: string = "0") => {
+    return {
+      id: this.maxId++,
+      isDone: false,
+      content: text,
+      isEditing: false,
+      time: new Date(2024, 0, 1, 0, Number(min), Number(sec)),
+      createdTime: new Date(),
+    };
   };
 
   state = {
@@ -41,6 +54,21 @@ class App extends React.Component<object, ITaskListState> {
     isActive: false,
     isCompleted: false,
     isAll: true,
+  };
+
+  handleOnRunning = (id: number) => {
+    this.setState(({ tasksArray }) => {
+      const updateTasksArray = tasksArray.map((task) => {
+        return task.id === id
+          ? {
+              ...task,
+              time: new Date(task.time.setSeconds(task.time.getSeconds() + 1)),
+            }
+          : task;
+      });
+
+      return { tasksArray: updateTasksArray };
+    });
   };
 
   handlePushTusk = (text: string) => {
@@ -181,6 +209,7 @@ class App extends React.Component<object, ITaskListState> {
             handleTaskDelete={this.handleTaskDelete}
             handleChangeTask={this.handleChangeTask}
             handleEditing={this.handleEditing}
+            handleOnRunning={this.handleOnRunning}
           ></TaskList>
           <Footer
             taskLength={this.getActiveTasks().length}
