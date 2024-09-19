@@ -1,7 +1,12 @@
 import "../../App.css";
 import { ChangeEvent, Component, ReactNode } from "react";
 
-export class AddMinutes extends Component {
+interface IAddMinProps {
+  setMin: (min: string) => void;
+  isSend: boolean;
+}
+
+export class AddMinutes extends Component<IAddMinProps> {
   state = {
     inputValue: "",
   };
@@ -11,8 +16,15 @@ export class AddMinutes extends Component {
 
     if (newValue === "" || (Number(newValue) >= 0 && Number(newValue) <= 30)) {
       this.setState({ inputValue: newValue });
+      this.props.setMin(newValue);
     }
   };
+
+  componentDidUpdate(): void {
+    if (this.props.isSend && this.state.inputValue !== "") {
+      this.setState({ inputValue: "" });
+    }
+  }
 
   render(): ReactNode {
     const { inputValue } = this.state;

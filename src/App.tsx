@@ -71,9 +71,9 @@ class App extends React.Component<object, ITaskListState> {
     });
   };
 
-  handlePushTusk = (text: string) => {
+  handlePushTusk = (text: string, min: string, sec: string) => {
     this.setState(({ tasksArray }) => {
-      const updateTasksArray = [...tasksArray, this.createTask(text)];
+      const updateTasksArray = [...tasksArray, this.createTask(text, min, sec)];
 
       return { tasksArray: updateTasksArray };
     });

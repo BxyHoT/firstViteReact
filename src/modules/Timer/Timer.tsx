@@ -22,7 +22,7 @@ export class Timer extends Component<ITimerProps, ITimerState> {
   };
 
   onRunning = () => {
-    if (!this.state.isRunning) {
+    if (!this.state.isRunning && !this.props.isDone) {
       this.setState({ isRunning: true });
 
       this.interval = setInterval(() => {
@@ -39,6 +39,11 @@ export class Timer extends Component<ITimerProps, ITimerState> {
   componentDidUpdate(prevProps: Readonly<ITimerProps>): void {
     if (prevProps.time !== this.props.time) {
       this.setState({ time: this.props.time.toLocaleTimeString().slice(3) });
+    }
+
+    if (this.props.isDone && this.state.isRunning) {
+      clearInterval(this.interval);
+      this.setState({ isRunning: false });
     }
   }
 

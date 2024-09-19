@@ -5,7 +5,7 @@ import { AddMinutes } from "../AddMinutes/AddMinutes";
 import { AddSec } from "../AddSec/AddSec";
 
 export class NewTaskForm extends Component<IHandleFunctionsByText> {
-  state = { inputValue: "" };
+  state = { inputValue: "", sec: "", min: "", isSend: false };
 
   onChange = (e: ChangeEvent<HTMLInputElement>) => {
     this.setState({ inputValue: e.target.value });
@@ -15,8 +15,16 @@ export class NewTaskForm extends Component<IHandleFunctionsByText> {
     this.setState({ inputValue: "" });
   };
 
+  setMin = (min: string) => {
+    this.setState({ min });
+  };
+
+  setSec = (sec: string) => {
+    this.setState({ sec });
+  };
+
   render() {
-    const { inputValue } = this.state;
+    const { inputValue, min, sec, isSend } = this.state;
     const { handlePushTask } = this.props;
 
     return (
@@ -29,13 +37,17 @@ export class NewTaskForm extends Component<IHandleFunctionsByText> {
           onChange={this.onChange}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              handlePushTask(inputValue);
+              handlePushTask(inputValue, min, sec);
               this.setInputValue();
+              this.setState({ isSend: true });
+              setTimeout(() => {
+                this.setState({ isSend: false });
+              }, 100);
             }
           }}
         />
-        <AddMinutes />
-        <AddSec />
+        <AddMinutes setMin={this.setMin} isSend={isSend} />
+        <AddSec setSec={this.setSec} isSend={isSend} />
       </form>
     );
   }

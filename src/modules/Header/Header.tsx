@@ -1,10 +1,10 @@
 import "../../App.css";
 import { NewTaskForm } from "../NewTaskForm/NewTaskForm";
 import { Component } from "react";
-import { HandleFunctionsByText } from "../../App";
+import { HandleFunctionsWithDate } from "../../App";
 
 export interface IHandleFunctionsByText {
-  handlePushTask: HandleFunctionsByText;
+  handlePushTask: HandleFunctionsWithDate;
 }
 
 export class Header extends Component<IHandleFunctionsByText> {
